@@ -17,8 +17,9 @@ export async function extractDataFromPdf(fileUrl: string) {
     throw new Error('API ключи не настроены в .env.local');
   }
   
-  // Ротация ключей: случайный выбор ключа для распределения нагрузки
-  const randomKey = keys[Math.floor(Math.random() * keys.length)];
+  // Ротация ключей: случайный выбор ключа и его очистка от случайных пробелов или кавычек
+  const rawKey = keys[Math.floor(Math.random() * keys.length)];
+  const randomKey = rawKey.trim().replace(/^["']|["']$/g, '');
   
   try {
     // Формируем жесткий промпт для извлечения данных
