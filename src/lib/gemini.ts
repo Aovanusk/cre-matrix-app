@@ -68,7 +68,7 @@ Required JSON structure:
         }
     });
 
-    const text = result.text();
+    const text = result.text;
     
     // Пытаемся распарсить JSON
     try {
