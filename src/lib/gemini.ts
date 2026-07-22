@@ -17,11 +17,17 @@ export async function extractDataFromPdf(fileUrl: string) {
     throw new Error('API ключи не настроены в .env.local');
   }
   
-  // Ротация ключей: случайный выбор ключа и его очистка от случайных пробелов или кавычек
   const rawKey = keys[Math.floor(Math.random() * keys.length)];
   const randomKey = rawKey.trim().replace(/^["']|["']$/g, '');
   
   try {
+    // 1. Скачиваем PDF по публичной ссылке из Supabase
+    const fileRes = await fetch(fileUrl);
+    if (!fileRes.ok) throw new Error('Не удалось скачать PDF файл по ссылке');
+    
+    const arrayBuffer = await fileRes.arrayBuffer();
+    const base64Data = Buffer.from(arrayBuffer).toString('base64');
+
     // Формируем жесткий промпт для извлечения данных
     const prompt = `You are an expert Commercial Real Estate (CRE) Data Extraction AI.
 Analyze this property presentation/flyer and extract the key financial and property metrics into a strict JSON format.
@@ -39,14 +45,12 @@ Required JSON structure:
   "property_type": "string (e.g. Retail, Industrial, Office, Multifamily)"
 }`;
 
-    // Отправляем запрос к OpenRouter API
-    const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+    // Отправляем запрос к VseGPT API
+    const response = await fetch("https://api.vsegpt.ru/v1/chat/completions", {
       method: "POST",
       headers: {
         "Authorization": `Bearer ${randomKey}`,
-        "Content-Type": "application/json",
-        "HTTP-Referer": "https://cre-matrix-app.netlify.app", // OpenRouter requires referer
-        "X-Title": "CRE Matrix Generator"
+        "Content-Type": "application/json"
       },
       body: JSON.stringify({
         model: "google/gemini-2.5-flash",
@@ -57,15 +61,9 @@ Required JSON structure:
             content: [
               { type: "text", text: prompt },
               { 
-                type: "text", 
-                text: "Here is the PDF link: " + fileUrl 
-                // We pass the URL in text so the model fetches it or uses its URL preview capabilities. 
-                // Alternatively, if OpenRouter natively supports PDF URLs in content array:
-              },
-              {
-                type: "file",
-                file: {
-                  file_data: fileUrl
+                type: "image_url",
+                image_url: {
+                  url: `data:application/pdf;base64,${base64Data}`
                 }
               }
             ]
@@ -76,7 +74,7 @@ Required JSON structure:
 
     if (!response.ok) {
       const errorText = await response.text();
-      throw new Error(`OpenRouter Error ${response.status}: ${errorText}`);
+      throw new Error(`VseGPT Error ${response.status}: ${errorText}`);
     }
 
     const data = await response.json();
@@ -88,7 +86,6 @@ Required JSON structure:
     
     // Пытаемся распарсить JSON
     try {
-      // Иногда ИИ оборачивает JSON в markdown ```json ... ```
       const cleanedText = text.replace(/```json/g, '').replace(/```/g, '').trim();
       return JSON.parse(cleanedText);
     } catch (parseError) {
