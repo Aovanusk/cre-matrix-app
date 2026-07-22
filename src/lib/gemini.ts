@@ -1,5 +1,3 @@
-import { GoogleGenAI } from '@google/genai';
-
 // Функция для получения всех доступных ключей из .env.local
 const getAvailableKeys = () => {
   return [
@@ -16,24 +14,14 @@ export async function extractDataFromPdf(fileUrl: string) {
   const keys = getAvailableKeys();
   
   if (keys.length === 0) {
-    throw new Error('API ключи Gemini не настроены в .env.local');
+    throw new Error('API ключи не настроены в .env.local');
   }
   
-  // Ротация ключей: случайный выбор ключа для распределения нагрузки (Load Balancing)
+  // Ротация ключей: случайный выбор ключа для распределения нагрузки
   const randomKey = keys[Math.floor(Math.random() * keys.length)];
   
-  // Инициализируем клиент Google Gen AI с выбранным ключом
-  const ai = new GoogleGenAI({ apiKey: randomKey });
-  
   try {
-    // 1. Скачиваем PDF по публичной ссылке из Supabase
-    const response = await fetch(fileUrl);
-    if (!response.ok) throw new Error('Не удалось скачать PDF файл по ссылке');
-    
-    const arrayBuffer = await response.arrayBuffer();
-    const base64Data = Buffer.from(arrayBuffer).toString('base64');
-    
-    // 2. Формируем жесткий промпт для извлечения данных
+    // Формируем жесткий промпт для извлечения данных
     const prompt = `You are an expert Commercial Real Estate (CRE) Data Extraction AI.
 Analyze this property presentation/flyer and extract the key financial and property metrics into a strict JSON format.
 If a specific value is missing or not mentioned in the document, use null.
@@ -50,40 +38,65 @@ Required JSON structure:
   "property_type": "string (e.g. Retail, Industrial, Office, Multifamily)"
 }`;
 
-    // 3. Отправляем запрос к Gemini
-    // Используем gemini-2.0-flash-exp (или gemini-1.5-flash), так как она идеально читает длинные PDF
-    const result = await ai.models.generateContent({
-        model: 'gemini-2.5-flash', // Используем актуальную модель 2026 года
-        contents: [
-            prompt,
-            {
-                inlineData: {
-                    data: base64Data,
-                    mimeType: 'application/pdf'
+    // Отправляем запрос к OpenRouter API
+    const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${randomKey}`,
+        "Content-Type": "application/json",
+        "HTTP-Referer": "https://cre-matrix-app.netlify.app", // OpenRouter requires referer
+        "X-Title": "CRE Matrix Generator"
+      },
+      body: JSON.stringify({
+        model: "google/gemini-2.5-flash",
+        response_format: { type: "json_object" },
+        messages: [
+          {
+            role: "user",
+            content: [
+              { type: "text", text: prompt },
+              { 
+                type: "text", 
+                text: "Here is the PDF link: " + fileUrl 
+                // We pass the URL in text so the model fetches it or uses its URL preview capabilities. 
+                // Alternatively, if OpenRouter natively supports PDF URLs in content array:
+              },
+              {
+                type: "file",
+                file: {
+                  file_data: fileUrl
                 }
-            }
-        ],
-        config: {
-            responseMimeType: "application/json", // Заставляем ИИ отвечать только строгим JSON
-        }
+              }
+            ]
+          }
+        ]
+      })
     });
 
-    const text = result.text;
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`OpenRouter Error ${response.status}: ${errorText}`);
+    }
+
+    const data = await response.json();
+    const text = data.choices[0]?.message?.content;
     
     if (!text) {
-      throw new Error('Gemini не вернула текст');
+      throw new Error('ИИ не вернул текст');
     }
     
     // Пытаемся распарсить JSON
     try {
-      return JSON.parse(text);
+      // Иногда ИИ оборачивает JSON в markdown ```json ... ```
+      const cleanedText = text.replace(/```json/g, '').replace(/```/g, '').trim();
+      return JSON.parse(cleanedText);
     } catch (parseError) {
-      console.error('Failed to parse Gemini JSON output:', text);
-      throw new Error('Gemini вернула некорректный формат данных (не JSON)');
+      console.error('Failed to parse JSON output:', text);
+      throw new Error('ИИ вернул некорректный формат данных (не JSON)');
     }
     
   } catch (error: any) {
-    console.error('Gemini API Error:', error);
+    console.error('API Error:', error);
     throw new Error(`Ошибка обработки ИИ: ${error.message}`);
   }
 }
