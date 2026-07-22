@@ -70,6 +70,10 @@ Required JSON structure:
 
     const text = result.text;
     
+    if (!text) {
+      throw new Error('Gemini не вернула текст');
+    }
+    
     // Пытаемся распарсить JSON
     try {
       return JSON.parse(text);
