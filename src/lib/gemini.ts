@@ -53,7 +53,7 @@ Required JSON structure:
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        model: "google/gemini-2.5-flash-lite",
+        model: "google/gemini-3.1-flash-lite",
         response_format: { type: "json_object" },
         messages: [
           {
