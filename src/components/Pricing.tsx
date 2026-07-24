@@ -9,9 +9,9 @@ interface PricingProps {
 }
 
 const PACKAGES = [
-  { credits: 50, priceUSD: 10, name: "Starter" },
-  { credits: 150, priceUSD: 25, name: "Pro" },
-  { credits: 400, priceUSD: 50, name: "Enterprise" }
+  { credits: 50, priceUSD: 100, name: "Starter" },
+  { credits: 150, priceUSD: 250, name: "Pro" },
+  { credits: 400, priceUSD: 500, name: "Enterprise" }
 ];
 
 export default function Pricing({ session }: PricingProps) {
