@@ -30,7 +30,7 @@ export async function POST(request: Request) {
     const orderId = `${user.id}|${Date.now()}|${credits}`;
     const merchantId = process.env.AAIO_MERCHANT_ID!;
     const secret1 = process.env.AAIO_SECRET_1!;
-    const currency = 'RUB';
+    const currency = 'USD';
     const desc = `Покупка ${credits} кредитов для CRE Matrix`;
 
     // AAio подпись: sha256(merchant_id:amount:currency:secret_key_1:order_id)
