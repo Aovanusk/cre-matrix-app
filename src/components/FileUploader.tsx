@@ -6,9 +6,10 @@ import { UploadCloud, Loader2 } from "lucide-react";
 
 interface FileUploaderProps {
   onExtractionSuccess: (data: any, fileName: string) => void;
+  session?: any;
 }
 
-export default function FileUploader({ onExtractionSuccess }: FileUploaderProps) {
+export default function FileUploader({ onExtractionSuccess, session }: FileUploaderProps) {
   const [isUploading, setIsUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -21,12 +22,17 @@ export default function FileUploader({ onExtractionSuccess }: FileUploaderProps)
       return;
     }
 
+    if (!session?.access_token) {
+      setError("Для загрузки файла необходимо авторизоваться.");
+      return;
+    }
+
     setIsUploading(true);
     setError(null);
 
     try {
       // 1. Уникальное имя файла
-      const uniqueFileName = `${Date.now()}_${file.name.replace(/[^a-zA-Z0-9.\-_]/g, "_")}`;
+      const uniqueFileName = `${session.user.id}/${Date.now()}_${file.name.replace(/[^a-zA-Z0-9.\-_]/g, "_")}`;
 
       // 2. Загрузка в Supabase (прямо из браузера)
       const { data, error: uploadError } = await supabase.storage
@@ -37,7 +43,7 @@ export default function FileUploader({ onExtractionSuccess }: FileUploaderProps)
         });
 
       if (uploadError) {
-        throw new Error(`Ошибка загрузки: ${uploadError.message}`);
+        throw new Error(`Ошибка загрузки в хранилище: ${uploadError.message}`);
       }
 
       // 3. Получаем публичную ссылку на файл
@@ -47,10 +53,13 @@ export default function FileUploader({ onExtractionSuccess }: FileUploaderProps)
 
       const fileUrl = publicUrlData.publicUrl;
 
-      // 4. Отправляем URL на наш Next.js Backend (который вызовет Gemini)
+      // 4. Отправляем URL на наш Next.js Backend (который проверит кредиты и вызовет Gemini)
       const res = await fetch("/api/extract", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${session.access_token}`
+        },
         body: JSON.stringify({ fileUrl, fileName: file.name }),
       });
 
@@ -68,7 +77,7 @@ export default function FileUploader({ onExtractionSuccess }: FileUploaderProps)
       setError(err.message || "Что-то пошло не так");
     } finally {
       setIsUploading(false);
-      // Сбрасываем input, чтобы можно было загрузить тот же файл еще раз, если надо
+      // Сбрасываем input
       event.target.value = '';
     }
   };
@@ -104,7 +113,7 @@ export default function FileUploader({ onExtractionSuccess }: FileUploaderProps)
           accept="application/pdf"
           className="hidden"
           onChange={handleFileUpload}
-          disabled={isUploading}
+          disabled={isUploading || !session}
         />
       </label>
 
