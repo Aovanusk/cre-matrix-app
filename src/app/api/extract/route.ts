@@ -19,6 +19,12 @@ export async function POST(request: Request) {
       return NextResponse.json({ success: false, error: 'Отсутствует fileUrl в запросе' }, { status: 400 });
     }
 
+    // SSRF & Storage Abuse Protection: Verify URL belongs to our Supabase Storage and to the current user
+    const expectedBaseUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/om_pdfs/`;
+    if (!fileUrl.startsWith(expectedBaseUrl)) {
+      return NextResponse.json({ success: false, error: 'Недопустимый источник файла' }, { status: 403 });
+    }
+
     // Инициализируем Supabase клиент с токеном пользователя
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
     const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
@@ -30,6 +36,12 @@ export async function POST(request: Request) {
     const { data: { user }, error: authError } = await supabase.auth.getUser(token);
     if (authError || !user) {
       return NextResponse.json({ success: false, error: 'Invalid token' }, { status: 401 });
+    }
+
+    // Дополнительная проверка SSRF: файл должен принадлежать текущему пользователю
+    const filePath = fileUrl.replace(expectedBaseUrl, '');
+    if (!filePath.startsWith(`${user.id}/`)) {
+      return NextResponse.json({ success: false, error: 'Нет доступа к этому файлу' }, { status: 403 });
     }
 
     // 2. Проверяем баланс кредитов
@@ -45,14 +57,29 @@ export async function POST(request: Request) {
 
     console.log(`[API] Обработка файла: ${fileName} для пользователя ${user.email}`);
 
-    // 3. Вызываем Gemini API
-    const extractedData = await extractDataFromPdf(fileUrl);
-    
-    // 4. Списываем 1 кредит с помощью вызова RPC-функции
+    // 3. Вызываем RPC-функцию deduct_credit ДО вызова тяжелого API (Pessimistic Locking)
     const { error: deductError } = await supabase.rpc('deduct_credit', { user_id: user.id });
     if (deductError) {
       console.error('[API] Ошибка при списании кредита:', deductError);
-      // Мы не прерываем запрос, так как работа выполнена, но логгируем ошибку
+      return NextResponse.json({ success: false, error: 'Не удалось списать кредит' }, { status: 500 });
+    }
+
+    // 4. Вызываем Gemini API
+    let extractedData;
+    try {
+      extractedData = await extractDataFromPdf(fileUrl);
+    } catch (geminiError: any) {
+      console.error('[API] Ошибка парсинга PDF (Gemini):', geminiError);
+      
+      // Откат транзакции (Refund): возвращаем 1 кредит
+      // Используем Service Key для возврата, так как deduct_credit мог быть вызван с Anon
+      const serviceSupabase = createClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.SUPABASE_SERVICE_ROLE_KEY!
+      );
+      await serviceSupabase.rpc('add_credits', { user_id: user.id, amount: 1 });
+      
+      throw geminiError; // Пробрасываем ошибку дальше в catch блок маршрута
     }
 
     // Возвращаем успешный ответ фронтенду

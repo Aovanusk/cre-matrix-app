@@ -9,23 +9,23 @@ interface PricingProps {
 }
 
 const PACKAGES = [
-  { credits: 50, priceUSD: 100, name: "Starter" },
-  { credits: 150, priceUSD: 250, name: "Pro" },
-  { credits: 400, priceUSD: 500, name: "Enterprise" }
+  { id: 'starter', credits: 50, priceUSD: 100, name: "Starter" },
+  { id: 'pro', credits: 150, priceUSD: 250, name: "Pro" },
+  { id: 'enterprise', credits: 400, priceUSD: 500, name: "Enterprise" }
 ];
 
 export default function Pricing({ session }: PricingProps) {
-  const [loadingPkg, setLoadingPkg] = useState<number | null>(null);
+  const [loadingPkg, setLoadingPkg] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const { t } = useI18n();
 
-  const handleBuy = async (credits: number, priceUSD: number) => {
+  const handleBuy = async (packageId: string) => {
     if (!session) {
       setError(t('pricing.err.login'));
       return;
     }
 
-    setLoadingPkg(credits);
+    setLoadingPkg(packageId);
     setError(null);
 
     try {
@@ -35,7 +35,7 @@ export default function Pricing({ session }: PricingProps) {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${session.access_token}`
         },
-        body: JSON.stringify({ amount: priceUSD, credits })
+        body: JSON.stringify({ packageId })
       });
 
       const data = await res.json();
@@ -70,7 +70,7 @@ export default function Pricing({ session }: PricingProps) {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {PACKAGES.map((pkg) => (
-          <div key={pkg.credits} className="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm flex flex-col items-center hover:border-blue-300 hover:shadow-md transition-all">
+          <div key={pkg.id} className="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm flex flex-col items-center hover:border-blue-300 hover:shadow-md transition-all">
             <h3 className="text-lg font-semibold text-slate-500 uppercase tracking-wider">{pkg.name}</h3>
             <div className="my-4 text-4xl font-extrabold text-slate-900">
               ${pkg.priceUSD}
@@ -80,11 +80,11 @@ export default function Pricing({ session }: PricingProps) {
             </div>
             
             <button
-              onClick={() => handleBuy(pkg.credits, pkg.priceUSD)}
+              onClick={() => handleBuy(pkg.id)}
               disabled={loadingPkg !== null}
               className="w-full mt-auto py-3 px-4 bg-slate-900 hover:bg-slate-800 text-white font-medium rounded-xl transition-colors disabled:opacity-70 disabled:cursor-not-allowed flex justify-center items-center gap-2"
             >
-              {loadingPkg === pkg.credits ? (
+              {loadingPkg === pkg.id ? (
                 <>
                   <Loader2 className="w-4 h-4 animate-spin" />
                   {t('pricing.loading')}

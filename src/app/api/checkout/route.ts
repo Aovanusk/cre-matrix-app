@@ -1,6 +1,12 @@
 import { NextResponse } from 'next/server';
 import crypto from 'crypto';
 
+const PACKAGES = [
+  { id: 'starter', credits: 50, priceUSD: 100 },
+  { id: 'pro', credits: 150, priceUSD: 250 },
+  { id: 'enterprise', credits: 400, priceUSD: 500 }
+];
+
 export async function POST(request: Request) {
   try {
     const authHeader = request.headers.get('authorization');
@@ -10,11 +16,18 @@ export async function POST(request: Request) {
     const token = authHeader.split(' ')[1];
 
     const body = await request.json();
-    const { amount, credits } = body;
+    const { packageId } = body;
     
-    if (!amount || !credits) {
-      return NextResponse.json({ success: false, error: 'Missing amount or credits' }, { status: 400 });
+    if (!packageId) {
+      return NextResponse.json({ success: false, error: 'Missing packageId' }, { status: 400 });
     }
+
+    const selectedPackage = PACKAGES.find(p => p.id === packageId);
+    if (!selectedPackage) {
+      return NextResponse.json({ success: false, error: 'Invalid packageId' }, { status: 400 });
+    }
+
+    const { amount, credits } = { amount: selectedPackage.priceUSD, credits: selectedPackage.credits };
 
     const { createClient } = require('@supabase/supabase-js');
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
