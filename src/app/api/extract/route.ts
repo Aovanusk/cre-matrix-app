@@ -27,7 +27,7 @@ export async function POST(request: Request) {
     });
 
     // 1. Проверяем валидность токена
-    const { data: { user }, error: authError } = await supabase.auth.getUser();
+    const { data: { user }, error: authError } = await supabase.auth.getUser(token);
     if (authError || !user) {
       return NextResponse.json({ success: false, error: 'Invalid token' }, { status: 401 });
     }
