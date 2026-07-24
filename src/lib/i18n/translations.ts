@@ -59,7 +59,12 @@ export const translations = {
     'auth.switch.nologin': 'No account?',
     'auth.switch.haslogin': 'Already have an account?',
     'auth.switch.create': 'Create',
-    'auth.switch.signin': 'Sign In'
+    'auth.switch.signin': 'Sign In',
+    
+    // Main Page
+    'page.header.title': 'CRE Matrix',
+    'page.header.subtitle': 'AI Assistant for Commercial Real Estate',
+    'page.upload.title': '1. Upload File (OM / Flyer)',
   },
   ru: {
     'header.login': 'Авторизоваться',
@@ -108,7 +113,12 @@ export const translations = {
     'auth.switch.nologin': 'Нет аккаунта?',
     'auth.switch.haslogin': 'Уже есть аккаунт?',
     'auth.switch.create': 'Создать',
-    'auth.switch.signin': 'Войти'
+    'auth.switch.signin': 'Войти',
+
+    // Main Page
+    'page.header.title': 'Матрица CRE',
+    'page.header.subtitle': 'AI-ассистент для коммерческой недвижимости',
+    'page.upload.title': '1. Загрузка файла (OM / Flyer)',
   },
   es: {
     'header.login': 'Iniciar sesión',
@@ -157,7 +167,12 @@ export const translations = {
     'auth.switch.nologin': '¿No tienes cuenta?',
     'auth.switch.haslogin': '¿Ya tienes cuenta?',
     'auth.switch.create': 'Crear',
-    'auth.switch.signin': 'Iniciar sesión'
+    'auth.switch.signin': 'Iniciar sesión',
+
+    // Main Page
+    'page.header.title': 'Matriz CRE',
+    'page.header.subtitle': 'Asistente IA para Bienes Raíces Comerciales',
+    'page.upload.title': '1. Subir archivo (OM / Flyer)',
   },
   ar: {
     'header.login': 'تسجيل الدخول',
@@ -206,6 +221,11 @@ export const translations = {
     'auth.switch.nologin': 'ليس لديك حساب؟',
     'auth.switch.haslogin': 'لديك حساب بالفعل؟',
     'auth.switch.create': 'إنشاء',
-    'auth.switch.signin': 'دخول'
+    'auth.switch.signin': 'دخول',
+
+    // Main Page
+    'page.header.title': 'مصفوفة CRE',
+    'page.header.subtitle': 'مساعد الذكاء الاصطناعي للعقارات التجارية',
+    'page.upload.title': '1. تحميل ملف (OM / Flyer)',
   }
 };

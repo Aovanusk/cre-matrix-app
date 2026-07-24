@@ -76,10 +76,10 @@ export default function Home() {
             </div>
             <div>
               <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-slate-900">
-                CRE Matrix
+                {t('page.header.title')}
               </h1>
               <p className="text-slate-500 mt-1 text-sm md:text-base">
-                AI Assistant for Commercial Real Estate
+                {t('page.header.subtitle')}
               </p>
             </div>
           </div>
@@ -118,7 +118,7 @@ export default function Home() {
 
         {/* Upload Zone */}
         <section className="bg-white p-6 md:p-8 rounded-3xl border border-slate-200 shadow-sm mb-8">
-          <h2 className="text-xl font-semibold mb-4">1. Загрузка файла (OM / Flyer)</h2>
+          <h2 className="text-xl font-semibold mb-4">{t('page.upload.title')}</h2>
           
           {!session ? (
             <div className="text-center py-12 border-2 border-dashed border-slate-200 rounded-2xl bg-slate-50">
