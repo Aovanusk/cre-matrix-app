@@ -6,7 +6,9 @@ import ResultsTable, { PropertyData } from "@/components/ResultsTable";
 import AuthModal from "@/components/AuthModal";
 import Pricing from "@/components/Pricing";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
-import { Building2, LogOut, Loader2, Zap } from "lucide-react";
+import LandingSections from "@/components/LandingSections";
+import HistoryDashboard from "@/components/HistoryDashboard";
+import { Building2, LogOut, Zap } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { useI18n } from "@/components/I18nProvider";
 
@@ -116,39 +118,37 @@ export default function Home() {
           </div>
         </header>
 
-        {/* Upload Zone */}
-        <section className="bg-white p-6 md:p-8 rounded-3xl border border-slate-200 shadow-sm mb-8">
-          <h2 className="text-xl font-semibold mb-4">{t('page.upload.title')}</h2>
-          
-          {!session ? (
-            <div className="text-center py-12 border-2 border-dashed border-slate-200 rounded-2xl bg-slate-50">
-              <h3 className="text-lg font-medium text-slate-900 mb-2">{t('page.login.title')}</h3>
-              <p className="text-slate-500 mb-6">{t('page.login.desc')}</p>
-              <button
-                onClick={() => setIsAuthModalOpen(true)}
-                className="bg-slate-900 hover:bg-slate-800 text-white px-6 py-2.5 rounded-xl font-medium transition-colors"
-              >
-                {t('header.login')}
-              </button>
-            </div>
-          ) : credits === 0 ? (
-            <div className="text-center py-12 border-2 border-dashed border-slate-200 rounded-2xl bg-slate-50">
-              <div className="w-12 h-12 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Zap className="w-6 h-6 text-amber-500" />
-              </div>
-              <h3 className="text-lg font-medium text-slate-900 mb-2">{t('page.empty.title')}</h3>
-              <p className="text-slate-500 mb-6">{t('page.empty.desc')}</p>
-              <button
-                onClick={() => document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' })}
-                className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-xl font-medium transition-colors shadow-sm"
-              >
-                {t('page.empty.btn')}
-              </button>
-            </div>
-          ) : (
-            <FileUploader onExtractionSuccess={handleExtractionSuccess} session={session} />
-          )}
-        </section>
+        {!session ? (
+          <LandingSections onGetStarted={() => setIsAuthModalOpen(true)} />
+        ) : (
+          <>
+            {/* Upload Zone */}
+            <section className="bg-white p-6 md:p-8 rounded-3xl border border-slate-200 shadow-sm mb-8">
+              <h2 className="text-xl font-semibold mb-4">{t('page.upload.title')}</h2>
+              
+              {credits === 0 ? (
+                <div className="text-center py-12 border-2 border-dashed border-slate-200 rounded-2xl bg-slate-50">
+                  <div className="w-12 h-12 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Zap className="w-6 h-6 text-amber-500" />
+                  </div>
+                  <h3 className="text-lg font-medium text-slate-900 mb-2">{t('page.empty.title')}</h3>
+                  <p className="text-slate-500 mb-6">{t('page.empty.desc')}</p>
+                  <button
+                    onClick={() => document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' })}
+                    className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-xl font-medium transition-colors shadow-sm"
+                  >
+                    {t('page.empty.btn')}
+                  </button>
+                </div>
+              ) : (
+                <FileUploader onExtractionSuccess={handleExtractionSuccess} session={session} />
+              )}
+            </section>
+
+            {/* History Dashboard */}
+            <HistoryDashboard session={session} onViewData={handleExtractionSuccess} />
+          </>
+        )}
 
         {/* Results Table Zone */}
         <section>

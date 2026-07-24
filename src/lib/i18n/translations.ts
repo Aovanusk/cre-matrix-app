@@ -65,6 +65,26 @@ export const translations = {
     'page.header.title': 'CRE Matrix',
     'page.header.subtitle': 'AI Assistant for Commercial Real Estate',
     'page.upload.title': '1. Upload File (OM / Flyer)',
+    
+    // Landing
+    'landing.hero.title': 'Automate Your CRE Underwriting',
+    'landing.hero.desc': 'Extract NOI, Cap Rates, and Tenant Data from Offering Memorandums in seconds using AI. Stop manual data entry.',
+    'landing.hero.btn': 'Get Started Free',
+    'landing.features.title': 'Why Choose CRE Matrix?',
+    'landing.features.1.title': '10x Faster',
+    'landing.features.1.desc': 'What takes an analyst 2 hours takes our AI 15 seconds.',
+    'landing.features.2.title': 'Pinpoint Accuracy',
+    'landing.features.2.desc': 'Built specifically for Commercial Real Estate terminology.',
+    'landing.features.3.title': 'Instant Export',
+    'landing.features.3.desc': 'Download ready-to-use Excel models instantly.',
+    
+    // History
+    'history.title': 'Your Analyses History',
+    'history.empty': 'No files analyzed yet.',
+    'history.btn.view': 'View Data',
+    'history.col.file': 'File Name',
+    'history.col.date': 'Date',
+    'history.col.action': 'Action',
   },
   ru: {
     'header.login': 'Авторизоваться',
@@ -119,6 +139,26 @@ export const translations = {
     'page.header.title': 'Матрица CRE',
     'page.header.subtitle': 'AI-ассистент для коммерческой недвижимости',
     'page.upload.title': '1. Загрузка файла (OM / Flyer)',
+
+    // Landing
+    'landing.hero.title': 'Автоматизируй андеррайтинг CRE',
+    'landing.hero.desc': 'Извлекай NOI, Cap Rates и данные арендаторов из тизеров (OM) за секунды. Хватит вбивать цифры руками.',
+    'landing.hero.btn': 'Начать бесплатно',
+    'landing.features.title': 'Почему именно Матрица CRE?',
+    'landing.features.1.title': 'В 10 раз быстрее',
+    'landing.features.1.desc': 'То, на что аналитик тратит 2 часа, наш ИИ делает за 15 секунд.',
+    'landing.features.2.title': 'Высокая точность',
+    'landing.features.2.desc': 'Обучено специально на терминологии коммерческой недвижимости.',
+    'landing.features.3.title': 'Мгновенный экспорт',
+    'landing.features.3.desc': 'Скачивай готовые Excel-модели в один клик.',
+
+    // History
+    'history.title': 'История анализов',
+    'history.empty': 'Вы еще не анализировали файлы.',
+    'history.btn.view': 'Смотреть данные',
+    'history.col.file': 'Файл',
+    'history.col.date': 'Дата',
+    'history.col.action': 'Действие',
   },
   es: {
     'header.login': 'Iniciar sesión',
@@ -173,6 +213,26 @@ export const translations = {
     'page.header.title': 'Matriz CRE',
     'page.header.subtitle': 'Asistente IA para Bienes Raíces Comerciales',
     'page.upload.title': '1. Subir archivo (OM / Flyer)',
+    
+    // Landing
+    'landing.hero.title': 'Automatice su suscripción de CRE',
+    'landing.hero.desc': 'Extraiga NOI, Cap Rates y datos de inquilinos de los memorandos en segundos usando IA.',
+    'landing.hero.btn': 'Empezar gratis',
+    'landing.features.title': '¿Por qué Matriz CRE?',
+    'landing.features.1.title': '10x Más rápido',
+    'landing.features.1.desc': 'Lo que a un analista le toma 2 horas, a nuestra IA le toma 15 segundos.',
+    'landing.features.2.title': 'Precisión exacta',
+    'landing.features.2.desc': 'Construido específicamente para términos de bienes raíces comerciales.',
+    'landing.features.3.title': 'Exportación instantánea',
+    'landing.features.3.desc': 'Descargue modelos de Excel listos para usar.',
+
+    // History
+    'history.title': 'Tu historial de análisis',
+    'history.empty': 'Aún no se han analizado archivos.',
+    'history.btn.view': 'Ver datos',
+    'history.col.file': 'Archivo',
+    'history.col.date': 'Fecha',
+    'history.col.action': 'Acción',
   },
   ar: {
     'header.login': 'تسجيل الدخول',
@@ -227,5 +287,25 @@ export const translations = {
     'page.header.title': 'مصفوفة CRE',
     'page.header.subtitle': 'مساعد الذكاء الاصطناعي للعقارات التجارية',
     'page.upload.title': '1. تحميل ملف (OM / Flyer)',
+    
+    // Landing
+    'landing.hero.title': 'أتمتة تقييم العقارات التجارية',
+    'landing.hero.desc': 'استخرج معدلات العائد والبيانات الصافية من العروض في ثوانٍ باستخدام الذكاء الاصطناعي.',
+    'landing.hero.btn': 'ابدأ مجانًا',
+    'landing.features.title': 'لماذا تختار مصفوفة CRE؟',
+    'landing.features.1.title': 'أسرع 10 مرات',
+    'landing.features.1.desc': 'ما يستغرق المحلل ساعتين، يستغرقه الذكاء الاصطناعي لدينا 15 ثانية.',
+    'landing.features.2.title': 'دقة متناهية',
+    'landing.features.2.desc': 'مبني خصيصًا لمصطلحات العقارات التجارية.',
+    'landing.features.3.title': 'تصدير فوري',
+    'landing.features.3.desc': 'تنزيل نماذج Excel جاهزة للاستخدام.',
+
+    // History
+    'history.title': 'تاريخ تحليلاتك',
+    'history.empty': 'لم يتم تحليل أي ملفات بعد.',
+    'history.btn.view': 'عرض البيانات',
+    'history.col.file': 'الملف',
+    'history.col.date': 'التاريخ',
+    'history.col.action': 'إجراء',
   }
 };

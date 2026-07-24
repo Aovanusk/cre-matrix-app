@@ -82,6 +82,21 @@ export async function POST(request: Request) {
       throw geminiError; // Пробрасываем ошибку дальше в catch блок маршрута
     }
 
+    // 5. Сохраняем результат в историю пользователя (таблица analyses)
+    const { error: insertError } = await supabase
+      .from('analyses')
+      .insert({
+        user_id: user.id,
+        file_name: fileName,
+        extracted_data: extractedData
+      });
+      
+    if (insertError) {
+      console.error('[API] Ошибка при сохранении в историю:', insertError);
+      // Мы не прерываем запрос, так как кредиты списаны и парсинг прошел, 
+      // просто пользователь не увидит это в истории.
+    }
+
     // Возвращаем успешный ответ фронтенду
     return NextResponse.json({ 
       success: true, 
