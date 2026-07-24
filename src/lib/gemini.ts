@@ -30,19 +30,25 @@ export async function extractDataFromPdf(fileUrl: string) {
 
     // Формируем жесткий промпт для извлечения данных
     const prompt = `You are an expert Commercial Real Estate (CRE) Data Extraction AI.
-Analyze this property presentation/flyer and extract the key financial and property metrics into a strict JSON format.
+Analyze this property presentation/flyer/report and extract the key financial and property metrics into a strict JSON format.
 If a specific value is missing or not mentioned in the document, use null.
 Return ONLY valid JSON. Do not include markdown code blocks or explanations.
 
+CRITICAL RULES:
+1. Deep Search: Even if this is a massive corporate report (50+ pages), scan ALL pages to find any Acquisition Targets or properties for sale.
+2. Pro Forma vs Current: If both Current (As-Is) and Pro Forma (Stabilized/Future) metrics are present, ALWAYS extract the Pro Forma metrics as they represent the target underwriting.
+3. Portfolio Sales: If the document is selling a Portfolio of multiple properties, extract the TOTAL (Blended) Asking Price, TOTAL NOI, Blended Cap Rate, and TOTAL GLA for the entire portfolio.
+4. Fake/Non-CRE Documents: If the document is clearly not a real estate offering (e.g. restaurant menu, personal letter, etc.), return null for all financial and property fields.
+
 Required JSON structure:
 {
-  "property_address": "string (full address or name of property)",
+  "property_address": "string (full address, name of property, or 'Portfolio')",
   "asking_price": number (just the number, e.g. 5500000),
   "noi": number (Net Operating Income, e.g. 385000),
   "cap_rate": number (Capitalization Rate, e.g. 7.5 for 7.5%),
   "occupancy_rate": number (e.g. 100 for 100%),
   "gla_sqft": number (Gross Leasable Area in sq ft),
-  "property_type": "string (e.g. Retail, Industrial, Office, Multifamily)"
+  "property_type": "string (e.g. Retail, Industrial, Office, Multifamily, Portfolio)"
 }`;
 
     // Отправляем запрос к VseGPT API

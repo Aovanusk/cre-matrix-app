@@ -22,6 +22,12 @@ export default function FileUploader({ onExtractionSuccess, session }: FileUploa
       return;
     }
 
+    // Проверка размера файла (максимум 15 МБ)
+    if (file.size > 15 * 1024 * 1024) {
+      setError("Файл слишком большой. Максимальный размер: 15 МБ.");
+      return;
+    }
+
     if (!session?.access_token) {
       setError("Для загрузки файла необходимо авторизоваться.");
       return;
