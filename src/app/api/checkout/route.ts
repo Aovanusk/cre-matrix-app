@@ -1,72 +1,45 @@
 import { NextResponse } from 'next/server';
 import crypto from 'crypto';
 
-const PACKAGES = [
-  { id: 'starter', credits: 50, priceUSD: 100 },
-  { id: 'pro', credits: 150, priceUSD: 250 },
-  { id: 'enterprise', credits: 400, priceUSD: 500 }
-];
+// Hardcoded packages (Security)
+const PACKAGES: Record<string, { priceUSD: number, credits: number }> = {
+  'starter': { priceUSD: 100, credits: 50 },
+  'pro': { priceUSD: 250, credits: 150 },
+  'enterprise': { priceUSD: 500, credits: 400 },
+};
 
-export async function POST(request: Request) {
+export async function POST(req: Request) {
   try {
-    const authHeader = request.headers.get('authorization');
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
-    }
-    const token = authHeader.split(' ')[1];
+    const { packageId, userId } = await req.json();
 
-    const body = await request.json();
-    const { packageId } = body;
+    if (!userId || !packageId || !PACKAGES[packageId]) {
+      return NextResponse.json({ error: 'Invalid parameters' }, { status: 400 });
+    }
+
+    const price = PACKAGES[packageId].priceUSD;
     
-    if (!packageId) {
-      return NextResponse.json({ success: false, error: 'Missing packageId' }, { status: 400 });
-    }
-
-    const selectedPackage = PACKAGES.find(p => p.id === packageId);
-    if (!selectedPackage) {
-      return NextResponse.json({ success: false, error: 'Invalid packageId' }, { status: 400 });
-    }
-
-    const { amount, credits } = { amount: selectedPackage.priceUSD, credits: selectedPackage.credits };
-
-    const { createClient } = require('@supabase/supabase-js');
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-    const supabase = createClient(supabaseUrl, supabaseKey);
-    const { data: { user }, error: authError } = await supabase.auth.getUser(token);
+    // Enot config
+    const shopId = process.env.ENOT_SHOP_ID;
+    const secretKey = process.env.ENOT_SECRET_KEY; // Секретный ключ (или API ключ, в зависимости от версии Enot)
     
-    if (authError || !user) {
-      return NextResponse.json({ success: false, error: 'Invalid token' }, { status: 401 });
+    if (!shopId || !secretKey) {
+      console.error('[Enot] Missing environment variables ENOT_SHOP_ID or ENOT_SECRET_KEY');
+      return NextResponse.json({ error: 'Payment gateway is not configured on the server.' }, { status: 500 });
     }
 
-    // Генерация уникального order_id: user_id|timestamp|credits
-    const orderId = `${user.id}|${Date.now()}|${credits}`;
-    const merchantId = process.env.AAIO_MERCHANT_ID!;
-    const secret1 = process.env.AAIO_SECRET_1!;
-    const currency = 'USD';
-    const desc = `Покупка ${credits} кредитов для CRE Matrix`;
-
-    // AAio подпись: sha256(merchant_id:amount:currency:secret_key_1:order_id)
-    const signString = `${merchantId}:${amount}:${currency}:${secret1}:${orderId}`;
-    const sign = crypto.createHash('sha256').update(signString).digest('hex');
-
-    // Формируем URL для редиректа на страницу оплаты AAio
-    const params = new URLSearchParams({
-      merchant_id: merchantId,
-      amount: amount.toString(),
-      currency: currency,
-      order_id: orderId,
-      sign: sign,
-      desc: desc,
-      lang: 'ru'
-    });
-
-    const paymentUrl = `https://aaio.so/merchant/pay?${params.toString()}`;
+    const orderId = `${userId}_${packageId}_${Date.now()}`;
     
-    return NextResponse.json({ success: true, paymentUrl: paymentUrl });
+    // Формат MD5: shop_id:amount:secret_word:order_id
+    const signString = `${shopId}:${price}:${secretKey}:${orderId}`;
+    const sign = crypto.createHash('md5').update(signString).digest('hex');
 
-  } catch (error: any) {
-    console.error('[Checkout API] Error:', error);
-    return NextResponse.json({ success: false, error: error.message || 'Internal server error' }, { status: 500 });
+    // Формируем URL для редиректа на страницу оплаты Enot
+    const paymentUrl = `https://enot.io/pay?m=${shopId}&oa=${price}&o=${orderId}&c=USD&s=${sign}`;
+
+    return NextResponse.json({ url: paymentUrl });
+
+  } catch (error) {
+    console.error('Checkout error:', error);
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
