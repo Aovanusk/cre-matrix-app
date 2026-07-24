@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Loader2, Zap } from "lucide-react";
+import { useI18n } from "./I18nProvider";
 
 interface PricingProps {
   session: any;
@@ -16,10 +17,11 @@ const PACKAGES = [
 export default function Pricing({ session }: PricingProps) {
   const [loadingPkg, setLoadingPkg] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const { t } = useI18n();
 
   const handleBuy = async (credits: number, priceUSD: number) => {
     if (!session) {
-      setError("Пожалуйста, авторизуйтесь для покупки кредитов.");
+      setError(t('pricing.err.login'));
       return;
     }
 
@@ -39,12 +41,10 @@ export default function Pricing({ session }: PricingProps) {
       const data = await res.json();
 
       if (!res.ok || !data.success) {
-        throw new Error(data.error || "Ошибка создания платежа");
+        throw new Error(data.error || t('pricing.err.fail'));
       }
 
-      // Редирект на AAio
       window.location.href = data.paymentUrl;
-
     } catch (err: any) {
       console.error(err);
       setError(err.message);
@@ -57,9 +57,9 @@ export default function Pricing({ session }: PricingProps) {
       <div className="text-center mb-8">
         <h2 className="text-2xl font-bold text-slate-800 flex items-center justify-center gap-2">
           <Zap className="text-yellow-500 w-6 h-6" fill="currentColor" />
-          Пополнение баланса
+          {t('pricing.title')}
         </h2>
-        <p className="text-slate-500 mt-2">Оплачивайте банковской картой РФ, СБП или криптовалютой со всего мира.</p>
+        <p className="text-slate-500 mt-2">{t('pricing.desc')}</p>
       </div>
 
       {error && (
@@ -76,7 +76,7 @@ export default function Pricing({ session }: PricingProps) {
               ${pkg.priceUSD}
             </div>
             <div className="text-blue-600 font-medium mb-6 bg-blue-50 px-4 py-1 rounded-full">
-              {pkg.credits} кредитов
+              {pkg.credits} {t('pricing.credits')}
             </div>
             
             <button
@@ -87,10 +87,10 @@ export default function Pricing({ session }: PricingProps) {
               {loadingPkg === pkg.credits ? (
                 <>
                   <Loader2 className="w-4 h-4 animate-spin" />
-                  Перенаправление...
+                  {t('pricing.loading')}
                 </>
               ) : (
-                "Оплатить (AAio)"
+                t('pricing.btn')
               )}
             </button>
           </div>

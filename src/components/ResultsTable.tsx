@@ -2,6 +2,7 @@
 
 import * as XLSX from "xlsx";
 import { Download } from "lucide-react";
+import { useI18n } from "./I18nProvider";
 
 export interface PropertyData {
   id: string; // Уникальный ID для ключа React
@@ -20,10 +21,12 @@ interface ResultsTableProps {
 }
 
 export default function ResultsTable({ data }: ResultsTableProps) {
+  const { t } = useI18n();
+
   if (data.length === 0) {
     return (
       <div className="text-center p-10 bg-white rounded-2xl border border-slate-100 shadow-sm mt-6">
-        <p className="text-slate-400">Нет данных. Загрузите первый PDF.</p>
+        <p className="text-slate-400">{t('page.nodata')}</p>
       </div>
     );
   }
@@ -60,13 +63,13 @@ export default function ResultsTable({ data }: ResultsTableProps) {
   return (
     <div className="mt-8 bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
       <div className="p-4 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
-        <h2 className="text-lg font-semibold text-slate-800">Извлеченные данные</h2>
+        <h2 className="text-lg font-semibold text-slate-800">{t('table.address')} / {t('table.file')}</h2>
         <button
           onClick={handleExportToExcel}
           className="flex items-center gap-2 px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white text-sm font-medium rounded-xl transition-colors"
         >
           <Download className="w-4 h-4" />
-          Экспорт в Excel
+          {t('table.export')}
         </button>
       </div>
       
@@ -74,13 +77,13 @@ export default function ResultsTable({ data }: ResultsTableProps) {
         <table className="w-full text-sm text-left">
           <thead className="text-xs text-slate-500 uppercase bg-slate-50 border-b border-slate-100">
             <tr>
-              <th className="px-6 py-4 font-medium">Объект / Адрес</th>
-              <th className="px-6 py-4 font-medium">Тип</th>
-              <th className="px-6 py-4 font-medium">Цена</th>
-              <th className="px-6 py-4 font-medium">NOI</th>
-              <th className="px-6 py-4 font-medium">Cap Rate</th>
-              <th className="px-6 py-4 font-medium">Площадь (sqft)</th>
-              <th className="px-6 py-4 font-medium">Заполн.</th>
+              <th className="px-6 py-4 font-medium">{t('table.address')}</th>
+              <th className="px-6 py-4 font-medium">{t('table.type')}</th>
+              <th className="px-6 py-4 font-medium">{t('table.price')}</th>
+              <th className="px-6 py-4 font-medium">{t('table.noi')}</th>
+              <th className="px-6 py-4 font-medium">{t('table.caprate')}</th>
+              <th className="px-6 py-4 font-medium">{t('table.gla')}</th>
+              <th className="px-6 py-4 font-medium">{t('table.occupancy')}</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100">

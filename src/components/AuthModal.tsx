@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { X, Mail, Lock, Loader2 } from "lucide-react";
+import { useI18n } from "./I18nProvider";
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -11,6 +12,7 @@ interface AuthModalProps {
 }
 
 export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps) {
+  const { t } = useI18n();
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -40,11 +42,12 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
           password,
         });
         if (error) throw error;
-        setMessage("Регистрация успешна! Теперь вы можете войти.");
+        if (error) throw error;
+        setMessage(t('auth.msg.success'));
         setIsLogin(true);
       }
     } catch (err: any) {
-      setError(err.message || "Произошла ошибка");
+      setError(err.message || t('auth.err'));
     } finally {
       setLoading(false);
     }
@@ -62,12 +65,12 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
 
         <div className="p-8">
           <h2 className="text-2xl font-bold text-slate-900 text-center mb-2">
-            {isLogin ? "С возвращением!" : "Создать аккаунт"}
+            {isLogin ? t('auth.title.login') : t('auth.title.register')}
           </h2>
           <p className="text-slate-500 text-center mb-8">
             {isLogin
-              ? "Войдите, чтобы продолжить работу с CRE Matrix"
-              : "Получите 3 бесплатных кредита на анализ PDF"}
+              ? t('auth.desc.login')
+              : t('auth.desc.register')}
           </p>
 
           {error && (
@@ -85,7 +88,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
           <form onSubmit={handleAuth} className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">
-                Email
+                {t('auth.email')}
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -104,7 +107,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
 
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">
-                Пароль
+                {t('auth.password')}
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -130,16 +133,16 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
               {loading ? (
                 <Loader2 className="w-5 h-5 animate-spin" />
               ) : isLogin ? (
-                "Войти"
+                t('auth.btn.login')
               ) : (
-                "Зарегистрироваться"
+                t('auth.btn.register')
               )}
             </button>
           </form>
 
           <div className="mt-6 text-center text-sm">
             <span className="text-slate-500">
-              {isLogin ? "Нет аккаунта?" : "Уже есть аккаунт?"}
+              {isLogin ? t('auth.switch.nologin') : t('auth.switch.haslogin')}
             </span>{" "}
             <button
               onClick={() => {
@@ -149,7 +152,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
               }}
               className="text-blue-600 font-semibold hover:text-blue-500 transition-colors"
             >
-              {isLogin ? "Создать" : "Войти"}
+              {isLogin ? t('auth.switch.create') : t('auth.switch.signin')}
             </button>
           </div>
         </div>

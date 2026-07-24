@@ -5,14 +5,17 @@ import FileUploader from "@/components/FileUploader";
 import ResultsTable, { PropertyData } from "@/components/ResultsTable";
 import AuthModal from "@/components/AuthModal";
 import Pricing from "@/components/Pricing";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { Building2, LogOut, Loader2, Zap } from "lucide-react";
 import { supabase } from "@/lib/supabase";
+import { useI18n } from "@/components/I18nProvider";
 
 export default function Home() {
   const [properties, setProperties] = useState<PropertyData[]>([]);
   const [session, setSession] = useState<any>(null);
   const [credits, setCredits] = useState<number | null>(null);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const { t } = useI18n();
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -82,11 +85,13 @@ export default function Home() {
           </div>
           
           <div className="flex items-center gap-4">
+            <LanguageSwitcher />
+            
             {session ? (
               <div className="flex items-center gap-4 bg-white px-4 py-2 rounded-xl shadow-sm border border-slate-200">
                 <div className="flex items-center gap-2 text-sm font-medium text-slate-700">
                   <Zap className="w-4 h-4 text-amber-500" />
-                  Кредиты: {credits !== null ? credits : "..."}
+                  {t('header.balance', credits !== null ? credits : "...")}
                 </div>
                 <div className="w-px h-4 bg-slate-200"></div>
                 <div className="text-sm text-slate-500 truncate max-w-[120px]">
@@ -95,7 +100,7 @@ export default function Home() {
                 <button
                   onClick={handleSignOut}
                   className="text-slate-400 hover:text-red-500 transition-colors p-1"
-                  title="Выйти"
+                  title={t('header.logout')}
                 >
                   <LogOut className="w-4 h-4" />
                 </button>
@@ -105,7 +110,7 @@ export default function Home() {
                 onClick={() => setIsAuthModalOpen(true)}
                 className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-xl font-medium shadow-sm shadow-blue-500/20 transition-colors"
               >
-                Войти
+                {t('header.login')}
               </button>
             )}
           </div>
@@ -117,13 +122,13 @@ export default function Home() {
           
           {!session ? (
             <div className="text-center py-12 border-2 border-dashed border-slate-200 rounded-2xl bg-slate-50">
-              <h3 className="text-lg font-medium text-slate-900 mb-2">Для загрузки файлов необходимо войти</h3>
-              <p className="text-slate-500 mb-6">Получите 3 бесплатных кредита при регистрации</p>
+              <h3 className="text-lg font-medium text-slate-900 mb-2">{t('page.login.title')}</h3>
+              <p className="text-slate-500 mb-6">{t('page.login.desc')}</p>
               <button
                 onClick={() => setIsAuthModalOpen(true)}
                 className="bg-slate-900 hover:bg-slate-800 text-white px-6 py-2.5 rounded-xl font-medium transition-colors"
               >
-                Авторизоваться
+                {t('header.login')}
               </button>
             </div>
           ) : credits === 0 ? (
@@ -131,13 +136,13 @@ export default function Home() {
               <div className="w-12 h-12 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Zap className="w-6 h-6 text-amber-500" />
               </div>
-              <h3 className="text-lg font-medium text-slate-900 mb-2">У вас закончились кредиты</h3>
-              <p className="text-slate-500 mb-6">Пополните баланс, чтобы продолжить обработку файлов.</p>
+              <h3 className="text-lg font-medium text-slate-900 mb-2">{t('page.empty.title')}</h3>
+              <p className="text-slate-500 mb-6">{t('page.empty.desc')}</p>
               <button
                 onClick={() => document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' })}
                 className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-xl font-medium transition-colors shadow-sm"
               >
-                Пополнить баланс
+                {t('page.empty.btn')}
               </button>
             </div>
           ) : (

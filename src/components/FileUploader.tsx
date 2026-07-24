@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { UploadCloud, Loader2 } from "lucide-react";
+import { useI18n } from "./I18nProvider";
 
 interface FileUploaderProps {
   onExtractionSuccess: (data: any, fileName: string) => void;
@@ -12,24 +13,24 @@ interface FileUploaderProps {
 export default function FileUploader({ onExtractionSuccess, session }: FileUploaderProps) {
   const [isUploading, setIsUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { t } = useI18n();
 
   const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
 
     if (file.type !== "application/pdf") {
-      setError("Пожалуйста, загрузите PDF файл.");
+      setError(t('uploader.err.pdf'));
       return;
     }
 
-    // Проверка размера файла (максимум 15 МБ)
     if (file.size > 15 * 1024 * 1024) {
-      setError("Файл слишком большой. Максимальный размер: 15 МБ.");
+      setError(t('uploader.err.size'));
       return;
     }
 
     if (!session?.access_token) {
-      setError("Для загрузки файла необходимо авторизоваться.");
+      setError(t('uploader.err.auth'));
       return;
     }
 
@@ -37,10 +38,8 @@ export default function FileUploader({ onExtractionSuccess, session }: FileUploa
     setError(null);
 
     try {
-      // 1. Уникальное имя файла
       const uniqueFileName = `${session.user.id}/${Date.now()}_${file.name.replace(/[^a-zA-Z0-9.\-_]/g, "_")}`;
 
-      // 2. Загрузка в Supabase (прямо из браузера)
       const { data, error: uploadError } = await supabase.storage
         .from("om_pdfs")
         .upload(uniqueFileName, file, {
@@ -52,14 +51,12 @@ export default function FileUploader({ onExtractionSuccess, session }: FileUploa
         throw new Error(`Ошибка загрузки в хранилище: ${uploadError.message}`);
       }
 
-      // 3. Получаем публичную ссылку на файл
       const { data: publicUrlData } = supabase.storage
         .from("om_pdfs")
         .getPublicUrl(uniqueFileName);
 
       const fileUrl = publicUrlData.publicUrl;
 
-      // 4. Отправляем URL на наш Next.js Backend (который проверит кредиты и вызовет Gemini)
       const res = await fetch("/api/extract", {
         method: "POST",
         headers: { 
@@ -75,7 +72,6 @@ export default function FileUploader({ onExtractionSuccess, session }: FileUploa
         throw new Error(responseData.error || "Ошибка обработки файла нейросетью");
       }
 
-      // 5. Передаем данные наверх в таблицу
       onExtractionSuccess(responseData.data, file.name);
 
     } catch (err: any) {
@@ -83,7 +79,6 @@ export default function FileUploader({ onExtractionSuccess, session }: FileUploa
       setError(err.message || "Что-то пошло не так");
     } finally {
       setIsUploading(false);
-      // Сбрасываем input
       event.target.value = '';
     }
   };
@@ -104,13 +99,13 @@ export default function FileUploader({ onExtractionSuccess, session }: FileUploa
           )}
           <p className="mb-2 text-sm text-slate-500 font-semibold">
             {isUploading ? (
-              "Идет загрузка и анализ (до 20 сек)..."
+              t('uploader.loading')
             ) : (
-              <>Нажмите или перетащите PDF</>
+              <>{t('uploader.drag')}</>
             )}
           </p>
           <p className="text-xs text-slate-400">
-            Презентации, флаеры, тизеры (PDF)
+            {t('uploader.desc')}
           </p>
         </div>
         <input
