@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { I18nProvider } from "@/components/I18nProvider";
+import Footer from "@/components/Footer";
 
 const inter = Inter({ subsets: ["latin", "cyrillic"] });
 
@@ -26,6 +27,7 @@ export default function RootLayout({
       <body className={`${inter.className} bg-slate-50 text-slate-900 min-h-screen`}>
         <I18nProvider>
           {children}
+          <Footer />
         </I18nProvider>
       </body>
     </html>
