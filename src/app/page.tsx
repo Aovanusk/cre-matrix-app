@@ -4,8 +4,9 @@ import { useState, useEffect } from "react";
 import FileUploader from "@/components/FileUploader";
 import ResultsTable, { PropertyData } from "@/components/ResultsTable";
 import AuthModal from "@/components/AuthModal";
+import Pricing from "@/components/Pricing";
+import { Building2, LogOut, Loader2, Zap } from "lucide-react";
 import { supabase } from "@/lib/supabase";
-import { Building2, LogOut, Zap } from "lucide-react";
 
 export default function Home() {
   const [properties, setProperties] = useState<PropertyData[]>([]);
@@ -133,6 +134,7 @@ export default function Home() {
               <h3 className="text-lg font-medium text-slate-900 mb-2">У вас закончились кредиты</h3>
               <p className="text-slate-500 mb-6">Пополните баланс, чтобы продолжить обработку файлов.</p>
               <button
+                onClick={() => document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' })}
                 className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-xl font-medium transition-colors shadow-sm"
               >
                 Пополнить баланс
@@ -147,6 +149,9 @@ export default function Home() {
         <section>
           <ResultsTable data={properties} />
         </section>
+
+        {/* Pricing Zone */}
+        <Pricing session={session} />
 
       </main>
 
