@@ -16,7 +16,7 @@ export default function Footer() {
             Automate underwriting and stop manual data entry.
           </p>
           <p className="text-sm">
-            Contact Support: <a href="mailto:support@cre-matrix.com" className="text-blue-400 hover:underline">support@cre-matrix.com</a>
+            Contact Support: <a href="mailto:support.cre.matrix@gmail.com" className="text-blue-400 hover:underline">support.cre.matrix@gmail.com</a>
           </p>
         </div>
 

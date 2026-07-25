@@ -22,7 +22,7 @@ export default function TermsPage() {
         
         <p><strong>5. Реквизиты</strong><br/>
         Проект CRE Matrix.<br/>
-        Email поддержки: support@cre-matrix.com</p>
+        Email поддержки: support.cre.matrix@gmail.com</p>
       </div>
     </div>
   );

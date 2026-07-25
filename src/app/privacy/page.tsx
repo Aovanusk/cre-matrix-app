@@ -21,7 +21,7 @@ export default function PrivacyPage() {
         Пользователь имеет право в любой момент удалить свой аккаунт и все связанные с ним файлы и историю анализов, обратившись в службу поддержки.</p>
         
         <p><strong>Контакты для связи по вопросам данных:</strong><br/>
-        Email: support@cre-matrix.com</p>
+        Email: support.cre.matrix@gmail.com</p>
       </div>
     </div>
   );
