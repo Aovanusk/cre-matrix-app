@@ -87,7 +87,7 @@ export default function FileUploader({ onExtractionSuccess, session }: FileUploa
     <div className="w-full">
       <label
         htmlFor="file-upload"
-        className={`relative flex flex-col items-center justify-center w-full h-48 border-2 border-dashed rounded-2xl cursor-pointer bg-slate-50 border-slate-300 hover:bg-slate-100 transition-all ${
+        className={`group relative flex flex-col items-center justify-center w-full h-56 border-2 border-dashed rounded-3xl cursor-pointer bg-slate-50/50 border-slate-300 hover:bg-blue-50/50 hover:border-blue-400 hover:shadow-lg hover:shadow-blue-500/10 transition-all duration-300 ${
           isUploading ? "opacity-50 pointer-events-none" : ""
         }`}
       >
