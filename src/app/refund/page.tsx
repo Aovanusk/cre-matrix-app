@@ -1,26 +1,31 @@
+"use client";
+
 import Link from "next/link";
+import { useI18n } from "@/components/I18nProvider";
 
 export default function RefundPage() {
+  const { t } = useI18n();
+
   return (
     <div className="max-w-3xl mx-auto px-6 py-12 bg-white min-h-screen">
       <div className="mb-8">
-        <Link href="/" className="text-blue-600 hover:underline">← Назад на главную</Link>
+        <Link href="/" className="text-blue-600 hover:underline">{t('nav.back')}</Link>
       </div>
-      <h1 className="text-3xl font-bold mb-6">Правила возврата средств</h1>
+      <h1 className="text-3xl font-bold mb-6">{t('refund.title')}</h1>
       <div className="space-y-6 text-slate-700 leading-relaxed">
-        <p><strong>1. Общие условия возврата</strong><br/>
-        Возврат денежных средств за оплаченные тарифы (пакеты кредитов) возможен только в случае, если Пользователь не потратил ни одного кредита из приобретенного пакета. Запрос на возврат должен быть отправлен в течение 14 дней с момента оплаты.</p>
+        <p><strong>{t('refund.p1.title')}</strong><br/>
+        {t('refund.p1.text')}</p>
         
-        <p><strong>2. Цифровые услуги и частичный возврат</strong><br/>
-        Обращаем внимание, что приобретение кредитов является получением неисключительной лицензии на доступ к цифровому контенту и вычислительным мощностям сервиса. В связи с природой цифровых услуг, которые требуют немедленных вычислительных затрат серверов ИИ, частичный возврат за частично использованный пакет кредитов не производится.</p>
+        <p><strong>{t('refund.p2.title')}</strong><br/>
+        {t('refund.p2.text')}</p>
         
-        <p><strong>3. Технические сбои</strong><br/>
-        В случае возникновения технических сбоев на стороне сервиса (ошибки парсинга, недоступность сервера), в результате которых услуга не была оказана, система автоматически возвращает списанные кредиты на баланс аккаунта Пользователя.</p>
+        <p><strong>{t('refund.p3.title')}</strong><br/>
+        {t('refund.p3.text')}</p>
         
-        <p><strong>4. Процедура и сроки возврата</strong><br/>
-        Для оформления возврата средств Пользователь должен обратиться в службу поддержки с указанием email адреса, на который зарегистрирован аккаунт, и чека об оплате. Возврат переведенных средств производится на ваш банковский счет в течение 5—30 рабочих дней (срок зависит от банка, выпустившего вашу банковскую карту).</p>
+        <p><strong>{t('refund.p4.title')}</strong><br/>
+        {t('refund.p4.text')}</p>
         
-        <p><strong>Контакты службы поддержки:</strong><br/>
+        <p><strong>{t('legal.contact')}</strong><br/>
         Email: support.cre.matrix@gmail.com</p>
       </div>
     </div>

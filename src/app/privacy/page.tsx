@@ -1,26 +1,31 @@
+"use client";
+
 import Link from "next/link";
+import { useI18n } from "@/components/I18nProvider";
 
 export default function PrivacyPage() {
+  const { t } = useI18n();
+  
   return (
     <div className="max-w-3xl mx-auto px-6 py-12 bg-white min-h-screen">
       <div className="mb-8">
-        <Link href="/" className="text-blue-600 hover:underline">← Назад на главную</Link>
+        <Link href="/" className="text-blue-600 hover:underline">{t('nav.back')}</Link>
       </div>
-      <h1 className="text-3xl font-bold mb-6">Политика конфиденциальности</h1>
+      <h1 className="text-3xl font-bold mb-6">{t('privacy.title')}</h1>
       <div className="space-y-6 text-slate-700 leading-relaxed">
-        <p><strong>1. Сбор информации</strong><br/>
-        При использовании сервиса CRE Matrix мы собираем следующие данные: адрес электронной почты (при регистрации) и загруженные PDF-файлы (исключительно на время автоматизированной машинной обработки).</p>
+        <p><strong>{t('privacy.p1.title')}</strong><br/>
+        {t('privacy.p1.text')}</p>
         
-        <p><strong>2. Использование информации и Искусственный Интеллект</strong><br/>
-        Собранные данные используются исключительно для предоставления услуг сервиса (генерация таблиц Excel). Ваша безопасность — наш приоритет. В отличие от публичных бесплатных нейросетей, CRE Matrix использует защищенные Enterprise API (Google LLC). В соответствии с условиями обслуживания провайдера, <strong>ваши документы НЕ используются для обучения публичных ИИ-моделей</strong>. Данные передаются по зашифрованному каналу исключительно для машинной обработки вашего запроса.</p>
+        <p><strong>{t('privacy.p2.title')}</strong><br/>
+        {t('privacy.p2.text')}</p>
         
-        <p><strong>3. Защита данных</strong><br/>
-        Загруженные файлы (PDF) хранятся в изолированном облачном хранилище с применением политик безопасности Row Level Security (RLS) и доступны только владельцу аккаунта. Мы не передаем ваши данные третьим лицам для рекламных или иных целей, за исключением технологического партнера (Google LLC), выступающего исключительно в роли субпроцессора (обработчика) для работы ИИ.</p>
+        <p><strong>{t('privacy.p3.title')}</strong><br/>
+        {t('privacy.p3.text')}</p>
         
-        <p><strong>4. Права пользователя</strong><br/>
-        Пользователь имеет право в любой момент запросить удаление своего аккаунта и всех связанных с ним файлов, обратившись в службу поддержки.</p>
+        <p><strong>{t('privacy.p4.title')}</strong><br/>
+        {t('privacy.p4.text')}</p>
         
-        <p><strong>Контакты для связи:</strong><br/>
+        <p><strong>{t('legal.contact')}</strong><br/>
         Email: support.cre.matrix@gmail.com</p>
       </div>
     </div>
