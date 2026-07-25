@@ -9,9 +9,9 @@ interface PricingProps {
 }
 
 const PACKAGES = [
-  { id: 'starter', credits: 50, priceUSD: 100, name: "Starter", recommended: false },
-  { id: 'pro', credits: 150, priceUSD: 250, name: "Pro B2B", recommended: true },
-  { id: 'enterprise', credits: 400, priceUSD: 500, name: "Enterprise", recommended: false }
+  { id: 'starter', credits: 50, priceUSD: 100, nameKey: "pricing.pkg.starter", recommended: false },
+  { id: 'pro', credits: 150, priceUSD: 250, nameKey: "pricing.pkg.pro", recommended: true },
+  { id: 'enterprise', credits: 400, priceUSD: 500, nameKey: "pricing.pkg.enterprise", recommended: false }
 ];
 
 export default function Pricing({ session }: PricingProps) {
@@ -79,12 +79,12 @@ export default function Pricing({ session }: PricingProps) {
           >
             {pkg.recommended && (
               <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-4 py-1 rounded-full text-xs font-bold uppercase tracking-wider flex items-center gap-1 shadow-lg shadow-blue-500/30">
-                <Star className="w-3 h-3 fill-current" /> Recommended
+                <Star className="w-3 h-3 fill-current" /> {t('pricing.badge.rec')}
               </div>
             )}
             
             <h3 className={`text-lg font-bold uppercase tracking-wider mb-2 ${pkg.recommended ? 'text-blue-600' : 'text-slate-500'}`}>
-              {pkg.name}
+              {t(pkg.nameKey)}
             </h3>
             
             <div className="my-6 text-5xl font-extrabold text-slate-900 tracking-tight">
@@ -98,9 +98,9 @@ export default function Pricing({ session }: PricingProps) {
             </div>
             
             <ul className="w-full space-y-3 mb-8 text-sm text-slate-600">
-              <li className="flex items-center gap-2"><Zap className="w-4 h-4 text-emerald-500" /> Instant API Access</li>
-              <li className="flex items-center gap-2"><Zap className="w-4 h-4 text-emerald-500" /> Excel Exports</li>
-              <li className="flex items-center gap-2"><Zap className="w-4 h-4 text-emerald-500" /> Enot.io Secure Payment</li>
+              <li className="flex items-center gap-2"><Zap className="w-4 h-4 text-emerald-500" /> {t('pricing.feature.1')}</li>
+              <li className="flex items-center gap-2"><Zap className="w-4 h-4 text-emerald-500" /> {t('pricing.feature.2')}</li>
+              <li className="flex items-center gap-2"><Zap className="w-4 h-4 text-emerald-500" /> {t('pricing.feature.3')}</li>
             </ul>
             
             <button

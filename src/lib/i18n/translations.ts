@@ -2,12 +2,10 @@ export type Language = 'en' | 'ru' | 'es' | 'ar';
 
 export const translations = {
   en: {
-    // Header & Global
     'header.login': 'Log In',
     'header.logout': 'Log Out',
     'header.balance': 'Credits: {0}',
     
-    // File Uploader
     'uploader.drag': 'Click or drag PDF here',
     'uploader.desc': 'Presentations, Flyers, Teasers (PDF)',
     'uploader.loading': 'Uploading and analyzing (up to 20 sec)...',
@@ -15,7 +13,6 @@ export const translations = {
     'uploader.err.size': 'File is too large. Max size: 15 MB.',
     'uploader.err.auth': 'Please log in to upload files.',
     
-    // Page States
     'page.nodata': 'No data yet. Upload your first PDF.',
     'page.login.title': 'Log in to upload files',
     'page.login.desc': 'Get 3 free credits upon registration',
@@ -23,7 +20,6 @@ export const translations = {
     'page.empty.desc': 'Top up your balance to continue processing files.',
     'page.empty.btn': 'Top up balance',
     
-    // Results Table
     'table.address': 'Property / Address',
     'table.type': 'Type',
     'table.price': 'Price',
@@ -36,7 +32,6 @@ export const translations = {
     'table.copied': 'Copied!',
     'table.empty': 'Empty',
     
-    // Pricing
     'pricing.title': 'Top up Balance',
     'pricing.desc': 'Pay with Credit Card or Crypto from anywhere in the world.',
     'pricing.credits': 'credits',
@@ -44,8 +39,14 @@ export const translations = {
     'pricing.btn': 'Pay Now',
     'pricing.err.login': 'Please log in to purchase credits.',
     'pricing.err.fail': 'Failed to create payment invoice.',
+    'pricing.pkg.starter': 'Starter',
+    'pricing.pkg.pro': 'Pro B2B',
+    'pricing.pkg.enterprise': 'Enterprise',
+    'pricing.badge.rec': 'Recommended',
+    'pricing.feature.1': 'Instant API Access',
+    'pricing.feature.2': 'Excel Exports',
+    'pricing.feature.3': 'Enot.io Secure Payment',
     
-    // Auth Modal
     'auth.title.login': 'Welcome back!',
     'auth.title.register': 'Create account',
     'auth.desc.login': 'Sign in to continue to CRE Matrix',
@@ -61,24 +62,27 @@ export const translations = {
     'auth.switch.create': 'Create',
     'auth.switch.signin': 'Sign In',
     
-    // Main Page
     'page.header.title': 'CRE Matrix',
     'page.header.subtitle': 'AI Assistant for Commercial Real Estate',
+    'page.header.badge': 'AI Platform',
     'page.upload.title': '1. Upload File (OM / Flyer)',
+    'page.secure.badge': 'Secure Enterprise Environment',
     
-    // Landing
+    'landing.hero.badge': 'AI-Powered Underwriting for Brokers',
     'landing.hero.title': 'Automate Your CRE Underwriting',
     'landing.hero.desc': 'Extract NOI, Cap Rates, and Tenant Data from Offering Memorandums in seconds using AI. Stop manual data entry.',
     'landing.hero.btn': 'Get Started Free',
     'landing.features.title': 'Why Choose CRE Matrix?',
+    'landing.features.subtitle': 'Stop manual data entry. Start closing deals.',
     'landing.features.1.title': '10x Faster',
     'landing.features.1.desc': 'What takes an analyst 2 hours takes our AI 15 seconds.',
     'landing.features.2.title': 'Pinpoint Accuracy',
     'landing.features.2.desc': 'Built specifically for Commercial Real Estate terminology.',
     'landing.features.3.title': 'Instant Export',
     'landing.features.3.desc': 'Download ready-to-use Excel models instantly.',
+    'landing.features.4.title': 'Enterprise-Grade Security',
+    'landing.features.4.desc': 'Built for commercial real estate professionals. Your Offering Memorandums (OMs) are processed via secure APIs and are strictly never used for public AI training models.',
     
-    // History
     'history.title': 'Your Analyses History',
     'history.empty': 'No files analyzed yet.',
     'history.btn.view': 'View Data',
@@ -117,9 +121,17 @@ export const translations = {
     'pricing.desc': 'Оплачивайте банковской картой РФ, СБП или криптовалютой со всего мира.',
     'pricing.credits': 'кредитов',
     'pricing.loading': 'Перенаправление...',
-    'pricing.btn': 'Оплатить (AAio)',
+    'pricing.btn': 'Оплатить (Enot.io)',
     'pricing.err.login': 'Пожалуйста, авторизуйтесь для покупки кредитов.',
     'pricing.err.fail': 'Ошибка создания платежа.',
+    'pricing.pkg.starter': 'Стартер',
+    'pricing.pkg.pro': 'Pro B2B',
+    'pricing.pkg.enterprise': 'Корпоративный',
+    'pricing.badge.rec': 'Рекомендуемый',
+    'pricing.feature.1': 'Мгновенный доступ к API',
+    'pricing.feature.2': 'Выгрузка в Excel',
+    'pricing.feature.3': 'Безопасная оплата Enot.io',
+    
     'auth.title.login': 'С возвращением!',
     'auth.title.register': 'Создать аккаунт',
     'auth.desc.login': 'Войдите, чтобы продолжить работу с CRE Matrix',
@@ -135,24 +147,27 @@ export const translations = {
     'auth.switch.create': 'Создать',
     'auth.switch.signin': 'Войти',
 
-    // Main Page
     'page.header.title': 'Матрица CRE',
     'page.header.subtitle': 'AI-ассистент для коммерческой недвижимости',
+    'page.header.badge': 'Платформа ИИ',
     'page.upload.title': '1. Загрузка файла (OM / Flyer)',
+    'page.secure.badge': 'Безопасная корпоративная среда',
 
-    // Landing
+    'landing.hero.badge': 'AI-Андеррайтинг для брокеров',
     'landing.hero.title': 'Автоматизируй андеррайтинг CRE',
     'landing.hero.desc': 'Извлекай NOI, Cap Rates и данные арендаторов из тизеров (OM) за секунды. Хватит вбивать цифры руками.',
     'landing.hero.btn': 'Начать бесплатно',
     'landing.features.title': 'Почему именно Матрица CRE?',
+    'landing.features.subtitle': 'Хватит вбивать цифры руками. Начни закрывать сделки.',
     'landing.features.1.title': 'В 10 раз быстрее',
     'landing.features.1.desc': 'То, на что аналитик тратит 2 часа, наш ИИ делает за 15 секунд.',
     'landing.features.2.title': 'Высокая точность',
     'landing.features.2.desc': 'Обучено специально на терминологии коммерческой недвижимости.',
     'landing.features.3.title': 'Мгновенный экспорт',
     'landing.features.3.desc': 'Скачивай готовые Excel-модели в один клик.',
+    'landing.features.4.title': 'Безопасность корпоративного уровня',
+    'landing.features.4.desc': 'Создано для профессионалов коммерческой недвижимости. Ваши тизеры обрабатываются через защищенные API и никогда не используются для обучения публичных ИИ-моделей.',
 
-    // History
     'history.title': 'История анализов',
     'history.empty': 'Вы еще не анализировали файлы.',
     'history.btn.view': 'Смотреть данные',
@@ -194,6 +209,13 @@ export const translations = {
     'pricing.btn': 'Pagar ahora',
     'pricing.err.login': 'Inicia sesión para comprar créditos.',
     'pricing.err.fail': 'Error al crear la factura de pago.',
+    'pricing.pkg.starter': 'Inicial',
+    'pricing.pkg.pro': 'Pro B2B',
+    'pricing.pkg.enterprise': 'Empresarial',
+    'pricing.badge.rec': 'Recomendado',
+    'pricing.feature.1': 'Acceso instantáneo a API',
+    'pricing.feature.2': 'Exportaciones a Excel',
+    'pricing.feature.3': 'Pago seguro Enot.io',
     'auth.title.login': '¡Bienvenido de nuevo!',
     'auth.title.register': 'Crear cuenta',
     'auth.desc.login': 'Inicia sesión para continuar en CRE Matrix',
@@ -209,24 +231,27 @@ export const translations = {
     'auth.switch.create': 'Crear',
     'auth.switch.signin': 'Iniciar sesión',
 
-    // Main Page
     'page.header.title': 'Matriz CRE',
     'page.header.subtitle': 'Asistente IA para Bienes Raíces Comerciales',
+    'page.header.badge': 'Plataforma IA',
     'page.upload.title': '1. Subir archivo (OM / Flyer)',
+    'page.secure.badge': 'Entorno Empresarial Seguro',
     
-    // Landing
+    'landing.hero.badge': 'Suscripción impulsada por IA para brokers',
     'landing.hero.title': 'Automatice su suscripción de CRE',
     'landing.hero.desc': 'Extraiga NOI, Cap Rates y datos de inquilinos de los memorandos en segundos usando IA.',
     'landing.hero.btn': 'Empezar gratis',
     'landing.features.title': '¿Por qué Matriz CRE?',
+    'landing.features.subtitle': 'Detenga la entrada manual de datos. Comience a cerrar tratos.',
     'landing.features.1.title': '10x Más rápido',
     'landing.features.1.desc': 'Lo que a un analista le toma 2 horas, a nuestra IA le toma 15 segundos.',
     'landing.features.2.title': 'Precisión exacta',
     'landing.features.2.desc': 'Construido específicamente para términos de bienes raíces comerciales.',
     'landing.features.3.title': 'Exportación instantánea',
     'landing.features.3.desc': 'Descargue modelos de Excel listos para usar.',
+    'landing.features.4.title': 'Seguridad de Nivel Empresarial',
+    'landing.features.4.desc': 'Construido para profesionales de bienes raíces comerciales. Sus Memorandos de Oferta se procesan a través de API seguras y nunca se utilizan para modelos de entrenamiento público de IA.',
 
-    // History
     'history.title': 'Tu historial de análisis',
     'history.empty': 'Aún no se han analizado archivos.',
     'history.btn.view': 'Ver datos',
@@ -268,6 +293,14 @@ export const translations = {
     'pricing.btn': 'ادفع الآن',
     'pricing.err.login': 'يرجى تسجيل الدخول لشراء الرصيد.',
     'pricing.err.fail': 'فشل في إنشاء فاتورة الدفع.',
+    'pricing.pkg.starter': 'مبتدئ',
+    'pricing.pkg.pro': 'احترافي B2B',
+    'pricing.pkg.enterprise': 'شركات',
+    'pricing.badge.rec': 'موصى به',
+    'pricing.feature.1': 'وصول فوري لواجهة برمجة التطبيقات',
+    'pricing.feature.2': 'تصدير إلى إكسل',
+    'pricing.feature.3': 'دفع آمن عبر Enot.io',
+    
     'auth.title.login': 'مرحباً بعودتك!',
     'auth.title.register': 'إنشاء حساب',
     'auth.desc.login': 'قم بتسجيل الدخول للمتابعة',
@@ -283,24 +316,27 @@ export const translations = {
     'auth.switch.create': 'إنشاء',
     'auth.switch.signin': 'دخول',
 
-    // Main Page
     'page.header.title': 'مصفوفة CRE',
     'page.header.subtitle': 'مساعد الذكاء الاصطناعي للعقارات التجارية',
+    'page.header.badge': 'منصة الذكاء الاصطناعي',
     'page.upload.title': '1. تحميل ملف (OM / Flyer)',
+    'page.secure.badge': 'بيئة مؤسسية آمنة',
     
-    // Landing
+    'landing.hero.badge': 'تقييم مدعوم بالذكاء الاصطناعي للوسطاء',
     'landing.hero.title': 'أتمتة تقييم العقارات التجارية',
     'landing.hero.desc': 'استخرج معدلات العائد والبيانات الصافية من العروض في ثوانٍ باستخدام الذكاء الاصطناعي.',
     'landing.hero.btn': 'ابدأ مجانًا',
     'landing.features.title': 'لماذا تختار مصفوفة CRE؟',
+    'landing.features.subtitle': 'أوقف إدخال البيانات يدويًا. ابدأ في إغلاق الصفقات.',
     'landing.features.1.title': 'أسرع 10 مرات',
     'landing.features.1.desc': 'ما يستغرق المحلل ساعتين، يستغرقه الذكاء الاصطناعي لدينا 15 ثانية.',
     'landing.features.2.title': 'دقة متناهية',
     'landing.features.2.desc': 'مبني خصيصًا لمصطلحات العقارات التجارية.',
     'landing.features.3.title': 'تصدير فوري',
     'landing.features.3.desc': 'تنزيل نماذج Excel جاهزة للاستخدام.',
+    'landing.features.4.title': 'أمان على مستوى المؤسسات',
+    'landing.features.4.desc': 'مبني لمحترفي العقارات التجارية. تتم معالجة عروض التقديم (OMs) الخاصة بك عبر واجهات برمجة تطبيقات آمنة ولا تُستخدم أبدًا لتدريب نماذج الذكاء الاصطناعي العامة.',
 
-    // History
     'history.title': 'تاريخ تحليلاتك',
     'history.empty': 'لم يتم تحليل أي ملفات بعد.',
     'history.btn.view': 'عرض البيانات',

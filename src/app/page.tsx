@@ -81,7 +81,7 @@ export default function Home() {
                 {t('page.header.title')}
               </h1>
               <p className="text-slate-500 text-xs font-medium uppercase tracking-wider mt-1">
-                AI Platform
+                {t('page.header.badge')}
               </p>
             </div>
           </div>
@@ -127,7 +127,7 @@ export default function Home() {
           <div className="animate-in fade-in slide-in-from-bottom-4 duration-700">
             {/* Secure Area Badge */}
             <div className="flex items-center justify-center gap-2 mb-8 text-emerald-600 bg-emerald-50 w-fit mx-auto px-4 py-1.5 rounded-full text-sm font-medium border border-emerald-100 shadow-sm">
-              <ShieldCheck className="w-4 h-4" /> Secure Enterprise Environment
+              <ShieldCheck className="w-4 h-4" /> {t('page.secure.badge')}
             </div>
 
             {/* Upload Zone */}

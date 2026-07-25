@@ -21,7 +21,7 @@ export default function LandingSections({ onGetStarted }: LandingSectionsProps) 
         <div className="relative z-10 flex flex-col items-center">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm text-blue-200 mb-8 backdrop-blur-md">
             <Sparkles className="w-4 h-4" />
-            <span>AI-Powered Underwriting for Brokers</span>
+            <span>{t('landing.hero.badge')}</span>
           </div>
           
           <h1 className="text-4xl md:text-7xl font-extrabold tracking-tight mb-6 leading-[1.1] max-w-4xl mx-auto bg-clip-text text-transparent bg-gradient-to-b from-white to-slate-400">
@@ -48,7 +48,7 @@ export default function LandingSections({ onGetStarted }: LandingSectionsProps) 
           <h2 className="text-3xl md:text-5xl font-bold text-slate-900 mb-4 tracking-tight">
             {t('landing.features.title')}
           </h2>
-          <p className="text-slate-500 text-lg">Stop manual data entry. Start closing deals.</p>
+          <p className="text-slate-500 text-lg">{t('landing.features.subtitle')}</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -84,9 +84,9 @@ export default function LandingSections({ onGetStarted }: LandingSectionsProps) 
             <div className="w-14 h-14 bg-white/10 text-blue-300 rounded-2xl flex items-center justify-center mb-6 border border-white/10">
               <ShieldCheck className="w-7 h-7" />
             </div>
-            <h3 className="font-bold text-2xl mb-3 text-white">Enterprise-Grade Security</h3>
+            <h3 className="font-bold text-2xl mb-3 text-white">{t('landing.features.4.title')}</h3>
             <p className="text-slate-300 text-lg leading-relaxed">
-              Built for commercial real estate professionals. Your Offering Memorandums (OMs) are processed via secure APIs and are strictly never used for public AI training models.
+              {t('landing.features.4.desc')}
             </p>
           </div>
         </div>
